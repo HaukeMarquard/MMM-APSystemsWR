@@ -37,7 +37,9 @@ Module.register("MMM-APSystemsWR", {
     } else {
       var container = document.createElement("div");
       var value = document.createElement("p");
-      value.innerText = this.weather;
+      value.innerText = `Aktuelle Leistung: ${
+        this.weather.data.p1 + this.weather.data.p2
+      } W`;
       container.appendChild(value);
       return container;
     }

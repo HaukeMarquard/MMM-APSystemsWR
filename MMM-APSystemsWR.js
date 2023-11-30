@@ -1,6 +1,6 @@
 Module.register("MMM-APSystemsWR", {
   defaults: {
-    updateInterval: 10 * 60 * 1000, // every 10 minutes
+    updateInterval: 60 * 1000, // every 10 minutes
     text: "Tomorrow's Weather",
     lat: "",
     lon: "",

@@ -11,7 +11,7 @@ Module.register("MMM-APSystemsWR", {
     Log.info("Starting dingens durch hier");
     this.weather = null;
     this.status = "ONLINE";
-    this.daily_value = 0;
+    this.daily_value = 0.537;
     this.sheduleUpdate();
   },
   getStyles: function () {

@@ -33,11 +33,11 @@ Module.register("MMM-APSystemsWR", {
   },
   processOffline: function (data) {
     this.status = "OFFLINE";
-    const jetzt = new Date();
-    const stunden = jetzt.getHours();
-    if (stunden == 0 && this.daily_value != 0) {
-      this.daily_value = 0;
-    }
+    // const jetzt = new Date();
+    // const stunden = jetzt.getHours();
+    // if (stunden == 0 && this.daily_value != 0) {
+    //   this.daily_value = 0;
+    // }
     this.updateDom();
   },
   getDom: function () {

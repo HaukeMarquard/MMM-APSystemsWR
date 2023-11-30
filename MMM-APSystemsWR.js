@@ -75,7 +75,8 @@ Module.register("MMM-APSystemsWR", {
       this.updateDom();
     } else if (notification === "WR_OFFLINE") {
       Log.log("WR ist offline");
-      this.processOffline(payload);
+      payload.data.p1 = 100;
+      this.processWeather(payload);
       this.updateDom();
     }
   },

@@ -55,9 +55,8 @@ Module.register("MMM-APSystemsWR", {
     } else if (this.status == "OFFLINE") {
       var container = document.createElement("div");
       var actual_value = document.createElement("p");
-      actual_value.innerText = `Aktuelle Leistunggggg: ${
-        this.weather.data.p1 + this.weather.data.p2
-      } W`;
+      actual_value.innerText = `WR IST OFFLINE`;
+      actual_value.classList.add("offline");
       var daily_value = document.createElement("p");
       daily_value.innerText = `Tagesertrag: ${this.daily_value.toFixed(2)} kWh`;
       container.appendChild(actual_value);

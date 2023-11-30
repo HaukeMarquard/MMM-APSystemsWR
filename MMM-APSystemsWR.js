@@ -33,7 +33,11 @@ Module.register("MMM-APSystemsWR", {
   },
   processOffline: function (data) {
     this.status = "OFFLINE";
-
+    const date = new Date();
+    const hour = date.getHours();
+    if (hour == 0) {
+      this.daily_value = 0;
+    }
     this.weather = data;
     this.updateDom();
   },

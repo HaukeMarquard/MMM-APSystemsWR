@@ -34,8 +34,10 @@ module.exports = NodeHelper.create({
       })
       .catch((error) => {
         if (axios.isCancel(error)) {
+          Log.info("offline 1");
           that.sendSocketNotification("WR_OFFLINE", { error: "OFFLINE" });
         } else {
+          Log.info("offline 2");
           that.sendSocketNotification("WR_OFFLINE", { error: "OFFLINE" });
         }
       });

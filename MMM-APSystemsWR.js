@@ -11,7 +11,7 @@ Module.register("MMM-APSystemsWR", {
     Log.info("Starting dingens durch hier");
     this.weather = null;
     this.status = "ONLINE";
-    this.daily_value = 0;
+    this.daily_value = 536;
     this.sheduleUpdate();
   },
   getStyles: function () {
@@ -33,7 +33,11 @@ Module.register("MMM-APSystemsWR", {
   },
   processOffline: function (data) {
     this.status = "OFFLINE";
-    this.weather = data;
+    const jetzt = new Date();
+    const stunden = jetzt.getHours();
+    if (stunden == 0 && this.daily_value != 0) {
+      this.daily_value = 0;
+    }
     this.updateDom();
   },
   getDom: function () {
@@ -66,12 +70,9 @@ Module.register("MMM-APSystemsWR", {
   },
   socketNotificationReceived: function (notification, payload) {
     if (notification === "WR_RESULT") {
-      Log.log("Data kommt an");
       this.processWeather(payload);
       this.updateDom();
     } else if (notification === "WR_OFFLINE") {
-      Log.log("WR ist offline");
-      payload.data.p1 = 100;
       this.processOffline(payload);
       this.updateDom();
     }

@@ -38,7 +38,9 @@ module.exports = NodeHelper.create({
           that.sendSocketNotification("WR_OFFLINE", { error: "OFFLINE" });
         } else {
           Log.info("offline 2");
-          that.sendSocketNotification("WR_OFFLINE", { error: "OFFLINE" });
+          that.sendSocketNotification("WR_RESULT", {
+            data: { p1: 3, p2: 4, e1: 34, e2: 12 },
+          });
         }
       });
     // axios.get(this.url).then((response) => {

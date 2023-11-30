@@ -36,11 +36,15 @@ Module.register("MMM-APSystemsWR", {
       return wrapper;
     } else {
       var container = document.createElement("div");
-      var value = document.createElement("p");
-      value.innerText = `Aktuelle Leistung: ${
+      var actual_value = document.createElement("p");
+      actual_value.innerText = `Aktuelle Leistung: ${
         this.weather.data.p1 + this.weather.data.p2
       } W`;
-      container.appendChild(value);
+      var daily_value = document.createElement("p");
+      daily_value.innerText = `Tagesertrag: ${(
+        this.weather.data.e1 + this.weather.data.e2
+      ).toFixed(2)} kWh`;
+      container.appendChild(actual_value);
       return container;
     }
   },

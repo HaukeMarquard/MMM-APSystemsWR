@@ -36,7 +36,7 @@ module.exports = NodeHelper.create({
         if (axios.isCancel(error)) {
           that.sendSocketNotification("WR_OFFLINE", { error: "OFFLINE" });
         } else {
-          console.log("Ein Fehler ist aufgetreten:", error);
+          that.sendSocketNotification("WR_OFFLINE", { error: "OFFLINE" });
         }
       });
     // axios.get(this.url).then((response) => {

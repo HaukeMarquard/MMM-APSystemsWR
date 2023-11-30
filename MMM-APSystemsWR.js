@@ -10,7 +10,8 @@ Module.register("MMM-APSystemsWR", {
     Log.info("Starting Module: " + this.name);
     Log.info("Starting dingens durch hier");
     this.weather = null;
-
+    this.status = "ONLINE";
+    this.daily_value = 0;
     this.sheduleUpdate();
   },
   getStyles: function () {
@@ -26,7 +27,12 @@ Module.register("MMM-APSystemsWR", {
   },
   processWeather: function (data) {
     this.weather = data;
+    this.daily_value = this.weather.data.e1 + this.weather.data.e2;
     //Datenverarbeitung
+    this.updateDom();
+  },
+  processOffline: function () {
+    this.status = "OFFLINE";
     this.updateDom();
   },
   getDom: function () {
@@ -34,16 +40,29 @@ Module.register("MMM-APSystemsWR", {
       var wrapper = document.createElement("div");
       wrapper.innerHTML = "Loading...";
       return wrapper;
-    } else {
+    } else if (this.status == "ONLINE") {
       var container = document.createElement("div");
       var actual_value = document.createElement("p");
       actual_value.innerText = `Aktuelle Leistung: ${
         this.weather.data.p1 + this.weather.data.p2
       } W`;
       var daily_value = document.createElement("p");
-      daily_value.innerText = `Tagesertrag: ${(
-        this.weather.data.e1 + this.weather.data.e2
-      ).toFixed(2)} kWh`;
+      daily_value.innerText = `Tagesertrag: ${this.daily_value.toFixed(2)} kWh`;
+      container.appendChild(actual_value);
+      container.appendChild(daily_value);
+      return container;
+    } else if (this.status == "OFFLINE") {
+      var container = document.createElement("div");
+      var offline = document.createElement("p");
+      offline.innerText = `WR ist offline`;
+      offline.classList.add("offline");
+      var actual_value = document.createElement("p");
+      actual_value.innerText = `Aktuelle Leistung: ${
+        this.weather.data.p1 + this.weather.data.p2
+      } W`;
+      var daily_value = document.createElement("p");
+      daily_value.innerText = `Tagesertrag: ${this.daily_value.toFixed(2)} kWh`;
+      container.appendChild(offline);
       container.appendChild(actual_value);
       container.appendChild(daily_value);
       return container;
@@ -52,6 +71,10 @@ Module.register("MMM-APSystemsWR", {
   socketNotificationReceived: function (notification, payload) {
     if (notification === "WR_RESULT") {
       Log.log("Data kommt an");
+      this.processWeather(payload);
+      this.updateDom();
+    } else if (notification === "WR_OFFLINE") {
+      Log.log("WR ist offline");
       this.processWeather(payload);
       this.updateDom();
     }

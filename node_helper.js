@@ -13,9 +13,35 @@ module.exports = NodeHelper.create({
     // this.url = `https://api.tomorrow.io/v4/weather/forecast?location=${payload.lat},${payload.lon}&apikey=${payload.api_key}`
     this.url = `http://192.168.178.61:8050/getOutputData`;
     Log.info(this.url);
-    axios.get(this.url).then((response) => {
-      that.sendSocketNotification("WR_RESULT", response.data);
-    });
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+
+    // Festlegen eines Zeitlimits in Millisekunden
+    const timeout = 5000; // z.B. 5000 Millisekunden = 5 Sekunden
+
+    // Starten des Timers, um den Request nach dem Zeitlimit abzubrechen
+    const timeoutId = setTimeout(() => {
+      source.cancel("Request wurde wegen Zeitüberschreitung abgebrochen");
+    }, timeout);
+    axios
+      .get(this.url, {
+        cancelToken: source.token,
+      })
+      .then((response) => {
+        // Stellen Sie sicher, dass der Timeout abgebrochen wird, wenn der Request erfolgreich war
+        clearTimeout(timeoutId);
+        that.sendSocketNotification("WR_RESULT", response.data);
+      })
+      .catch((error) => {
+        if (axios.isCancel(error)) {
+          that.sendSocketNotification("WR_OFFLINE", { error: "OFFLINE" });
+        } else {
+          console.log("Ein Fehler ist aufgetreten:", error);
+        }
+      });
+    // axios.get(this.url).then((response) => {
+    //   that.sendSocketNotification("WR_RESULT", response.data);
+    // });
   },
   socketNotificationReceived: function (notification, payload) {
     if (notification == "GET_DATA") {

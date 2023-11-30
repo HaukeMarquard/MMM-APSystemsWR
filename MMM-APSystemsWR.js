@@ -45,6 +45,7 @@ Module.register("MMM-APSystemsWR", {
         this.weather.data.e1 + this.weather.data.e2
       ).toFixed(2)} kWh`;
       container.appendChild(actual_value);
+      container.appendChild(daily_value);
       return container;
     }
   },

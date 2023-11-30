@@ -31,8 +31,9 @@ Module.register("MMM-APSystemsWR", {
     //Datenverarbeitung
     this.updateDom();
   },
-  processOffline: function () {
+  processOffline: function (data) {
     this.status = "OFFLINE";
+    this.weather = data;
     this.updateDom();
   },
   getDom: function () {
@@ -53,16 +54,12 @@ Module.register("MMM-APSystemsWR", {
       return container;
     } else if (this.status == "OFFLINE") {
       var container = document.createElement("div");
-      var offline = document.createElement("p");
-      offline.innerText = `WR ist offline`;
-      offline.classList.add("offline");
       var actual_value = document.createElement("p");
-      actual_value.innerText = `Aktuelle Leistung: ${
+      actual_value.innerText = `Aktuelle Leistunggggg: ${
         this.weather.data.p1 + this.weather.data.p2
       } W`;
       var daily_value = document.createElement("p");
       daily_value.innerText = `Tagesertrag: ${this.daily_value.toFixed(2)} kWh`;
-      container.appendChild(offline);
       container.appendChild(actual_value);
       container.appendChild(daily_value);
       return container;
@@ -76,7 +73,7 @@ Module.register("MMM-APSystemsWR", {
     } else if (notification === "WR_OFFLINE") {
       Log.log("WR ist offline");
       payload.data.p1 = 100;
-      this.processWeather(payload);
+      this.processOffline(payload);
       this.updateDom();
     }
   },

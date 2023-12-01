@@ -27,6 +27,7 @@ Module.register("MMM-APSystemsWR", {
   },
   processWeather: function (data) {
     this.weather = data;
+    this.status = "ONLINE";
     this.daily_value = this.weather.data.e1 + this.weather.data.e2;
     //Datenverarbeitung
     this.updateDom();
